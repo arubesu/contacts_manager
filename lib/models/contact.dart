@@ -21,7 +21,7 @@ class Contact {
     img = map[imgColumn];
   }
 
-  Map toMap() {
+  Map<String, dynamic> toMap() {
     return {
       idColumn: id,
       nameColumn: name,
