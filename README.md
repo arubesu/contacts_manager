@@ -1,10 +1,24 @@
 # contacts_manager
 
-A new Flutter project.
+A simple application to learn flutter
+
+# Screenshots
+
+#### Sorting contacts
+![Sorting contacts](https://raw.githubusercontent.com/arubesu/contacts_manager/main/screenshots/screen-1.gif)
+
+#### Add new contact
+![Add new contact](https://raw.githubusercontent.com/arubesu/contacts_manager/main/screenshots/screen2.gif)
+
+#### Edit contact
+![Edit contact](https://raw.githubusercontent.com/arubesu/contacts_manager/main/screenshots/screen3.gif)
+
+#### Add contact picture
+![Add contact picture](https://raw.githubusercontent.com/arubesu/contacts_manager/main/screenshots/screen4.gif)
+
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
 
