@@ -3,6 +3,7 @@ import 'package:contacts_manager/helpers/contacts_helper.dart';
 import 'package:contacts_manager/models/contact.dart';
 import 'package:contacts_manager/pages/contact_page.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -113,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 onPressed: () {
                                   Navigator.pop(context);
-                                  _showContactPage(contact: _contacts[index]);
+                                  launch("tel:${_contacts[index].phone}");
                                 })),
                         Padding(
                             padding: EdgeInsets.all(10),

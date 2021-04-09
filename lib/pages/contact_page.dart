@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:contacts_manager/models/contact.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ContactPage extends StatefulWidget {
   final Contact contact;
@@ -61,15 +62,29 @@ class _ContactPageState extends State<ContactPage> {
           padding: EdgeInsets.all(10),
           child: Column(
             children: <Widget>[
-              Container(
-                  width: 140,
-                  height: 140,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: _editedContact.img != null
-                              ? FileImage(File(_editedContact.img))
-                              : AssetImage("images/profile.png")))),
+              GestureDetector(
+                onTap: () {
+                  ImagePicker()
+                      .getImage(source: ImageSource.camera)
+                      .then((img) => {
+                            if (img != null)
+                              {
+                                setState(() {
+                                  _editedContact.img = img.path;
+                                })
+                              }
+                          });
+                },
+                child: Container(
+                    width: 140,
+                    height: 140,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: _editedContact.img != null
+                                ? FileImage(File(_editedContact.img))
+                                : AssetImage("images/profile.png")))),
+              ),
               TextField(
                   focusNode: _nameFocus,
                   decoration: InputDecoration(labelText: "Name"),
