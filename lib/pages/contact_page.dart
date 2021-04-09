@@ -129,6 +129,7 @@ class _ContactPageState extends State<ContactPage> {
 
       return Future.value(false);
     }
+
     return Future.value(true);
   }
 }

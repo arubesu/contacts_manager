@@ -10,9 +10,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var contactDAO = ContactHelper();
+  var _contactDAO = ContactHelper();
 
-  List<Contact> contacts = [];
+  List<Contact> _contacts = [];
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
           child: Icon(Icons.add)),
       body: ListView.builder(
           padding: EdgeInsets.all(10),
-          itemCount: contacts.length, //contacts.length,
+          itemCount: _contacts.length, //contacts.length,
           itemBuilder: (context, index) {
             return _contactCardBuilder(context, index);
           }),
@@ -56,8 +56,8 @@ class _HomePageState extends State<HomePage> {
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                                image: contacts[index].img != null
-                                    ? FileImage(File(contacts[index].img))
+                                image: _contacts[index].img != null
+                                    ? FileImage(File(_contacts[index].img))
                                     : AssetImage("images/profile.png")))),
                     Padding(
                       padding: EdgeInsets.only(left: 10.0),
@@ -65,18 +65,18 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            contacts[index].name ?? "",
+                            _contacts[index].name ?? "",
                             style: TextStyle(
                                 fontSize: 22, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            contacts[index].email ?? "",
+                            _contacts[index].email ?? "",
                             style: TextStyle(
                               fontSize: 18,
                             ),
                           ),
                           Text(
-                            contacts[index].phone ?? "",
+                            _contacts[index].phone ?? "",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -87,7 +87,65 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ))),
         onTap: () {
-          _showContactPage(contact: contacts[index]);
+          _showContactActions(context, index);
+        });
+  }
+
+  void _showContactActions(BuildContext context, int index) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return BottomSheet(
+              onClosing: () => Navigator.pop(context),
+              builder: (context) {
+                return Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.all(10),
+                            child: TextButton(
+                                child: Text(
+                                  "Call",
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 20),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  _showContactPage(contact: _contacts[index]);
+                                })),
+                        Padding(
+                            padding: EdgeInsets.all(10),
+                            child: TextButton(
+                                child: Text(
+                                  "Edit",
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 20),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  _showContactPage(contact: _contacts[index]);
+                                })),
+                        Padding(
+                            padding: EdgeInsets.all(10),
+                            child: TextButton(
+                                child: Text(
+                                  "Delete",
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 20),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  setState(() {
+                                    _contactDAO
+                                        .deleteContact(_contacts[index].id);
+                                    _contacts.removeAt(index);
+                                  });
+                                })),
+                      ],
+                    ));
+              });
         });
   }
 
@@ -96,15 +154,15 @@ class _HomePageState extends State<HomePage> {
         MaterialPageRoute(builder: (context) => ContactPage(contact: contact)));
 
     if (_editedContact != null) {
-      await contactDAO.saveOrUpdateContact(_editedContact);
+      await _contactDAO.saveOrUpdateContact(_editedContact);
     }
     _getAllContacts();
   }
 
   void _getAllContacts() {
-    contactDAO.getContacts().then((contactsResult) => {
+    _contactDAO.getContacts().then((contactsResult) => {
           setState(() {
-            contacts = contactsResult;
+            _contacts = contactsResult;
           })
         });
   }
