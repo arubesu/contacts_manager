@@ -5,6 +5,11 @@ import 'package:contacts_manager/pages/contact_page.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+enum OrderOption {
+  ascending,
+  descending,
+}
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -29,6 +34,21 @@ class _HomePageState extends State<HomePage> {
         title: Text('Contacts'),
         backgroundColor: Colors.red,
         centerTitle: true,
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: Text("Sort A-Z"),
+                value: OrderOption.ascending,
+              ),
+              PopupMenuItem(
+                child: Text("Sort Z-A"),
+                value: OrderOption.descending,
+              )
+            ],
+            onSelected: _sortContacts,
+          ),
+        ],
       ),
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
@@ -166,5 +186,19 @@ class _HomePageState extends State<HomePage> {
             _contacts = contactsResult;
           })
         });
+  }
+
+  void _sortContacts(OrderOption orderOption) {
+    setState(() {
+      switch (orderOption) {
+        case OrderOption.ascending:
+          _contacts.sort(
+              (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+          break;
+        case OrderOption.descending:
+          _contacts.sort(
+              (b, a) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      }
+    });
   }
 }
